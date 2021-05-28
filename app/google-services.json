@@ -1,0 +1,85 @@
+{
+  "project_info": {
+    "project_number": "739755156367",
+    "firebase_url": "https://walletchat-8a9e3-default-rtdb.firebaseio.com",
+    "project_id": "walletchat-8a9e3",
+    "storage_bucket": "walletchat-8a9e3.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:739755156367:android:6bbcfe6e00f083abbea1fa",
+        "android_client_info": {
+          "package_name": "com.mechat.app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "739755156367-9uq853r83fav6ib351e6j9vbgivpcs3d.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.mechat.app",
+            "certificate_hash": "d59c3a6649cea37140935b00317d16b33ef2084c"
+          }
+        },
+        {
+          "client_id": "739755156367-hgjn7t4vkb9qs2d287pr0nvcobr32hth.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDTKrpjRsmQZnxJMWV3a2ScKZ_mTlKKLsE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "739755156367-hgjn7t4vkb9qs2d287pr0nvcobr32hth.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:739755156367:android:422fdfca3208a226bea1fa",
+        "android_client_info": {
+          "package_name": "com.walletchat.newsapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "739755156367-pumt0jou4d49jlm5rdro09f4udigmhct.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.walletchat.newsapp",
+            "certificate_hash": "d59c3a6649cea37140935b00317d16b33ef2084c"
+          }
+        },
+        {
+          "client_id": "739755156367-hgjn7t4vkb9qs2d287pr0nvcobr32hth.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDTKrpjRsmQZnxJMWV3a2ScKZ_mTlKKLsE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "739755156367-hgjn7t4vkb9qs2d287pr0nvcobr32hth.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,0 +1,44 @@
+<resources>
+    <string name="app_name">WalletChat</string>
+    <string name="image_description">Icon</string>
+    <string name="no_internet_text">No internet connection,Please connect to internet and try again</string>
+    <string name="retry_text">Retry</string>
+    <string name="title_activity_main2">MainActivity</string>
+    <string name="google_button_text">https://www.iconfinder.com/justui</string>
+    <string name="facebook_button_text">https://www.iconfinder.com/iconfinder</string>
+    <!-- Strings used for fragments for navigation -->
+    <string name="first_fragment_label">First Fragment</string>
+    <string name="second_fragment_label">Second Fragment</string>
+    <string name="next">Next</string>
+    <string name="previous">Previous</string>
+
+    <string name="hello_first_fragment">Hello first fragment</string>
+    <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
+    <string name="chat">Chat</string>
+    <string name="google_login">Google login</string>
+    <string name="facebook_login">Facebook login</string>
+    <string name="email">Email/Phone No</string>
+    <string name="password">Password</string>
+    <string name="sign_up">Sign Up</string>
+    <string name="sign_in">Sign In</string>
+    <string name="username">Username</string>
+    <string name="create_text">Create</string>
+    <string name="no_account_text">Don\'t Have An Account?</string>
+    <string name="have_an_account">Have An Account?</string>
+    <string name="settings_text">Settings</string>
+    <string name="logout_text">Logout</string>
+    <string name="forgot_password">Forgot Password?</string>
+    <string name="new_password">New Password</string>
+    <string name="back_text">back</string>
+    <string name="profile">profile</string>
+    <string name="tap_to_chat">Tap to chat</string>
+    <string name="select_user">Select User</string>
+    <string name="type_a_message">Type a message</string>
+    <string name="send">Send</string>
+    <string name="userImage">UserImage</string>
+    <string name="facebook_app_id">1097121880784535</string>
+    <string name="fb_login_protocol_scheme">fb1097121880784535</string>
+    <string name="title_activity_otp">OtpActivity</string>
+
+
+</resources>
