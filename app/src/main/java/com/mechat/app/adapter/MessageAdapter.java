@@ -112,6 +112,7 @@ public class MessageAdapter extends RecyclerView.Adapter {
                 if (message.getMessage().length() > 12) {
 
                     sendViewHolder.binding.messageLong.setVisibility(View.VISIBLE);
+                    sendViewHolder.binding.message.setVisibility(View.GONE);
                     sendViewHolder.binding.messageLong.setText(message.getMessage());
                     if (message.getMessage().length() > 500) {
 
@@ -122,7 +123,7 @@ public class MessageAdapter extends RecyclerView.Adapter {
                         sendViewHolder.binding.readMore.setVisibility(View.GONE);
                     }
                 } else {
-
+                    sendViewHolder.binding.message.setVisibility(View.VISIBLE);
                     sendViewHolder.binding.messageLong.setVisibility(View.GONE);
                     sendViewHolder.binding.readMore.setVisibility(View.GONE);
                     sendViewHolder.binding.message.setText(message.getMessage());
@@ -162,7 +163,9 @@ public class MessageAdapter extends RecyclerView.Adapter {
                     receiveViewHolder.binding.dayText.setVisibility(View.VISIBLE);
                 }
                 if (message.getMessage().length() > 12) {
+
                     receiveViewHolder.binding.messageLong.setVisibility(View.VISIBLE);
+                    receiveViewHolder.binding.message.setVisibility(View.GONE);
                     receiveViewHolder.binding.messageLong.setText(message.getMessage());
                     if (message.getMessage().length() > 500) {
 
@@ -173,8 +176,9 @@ public class MessageAdapter extends RecyclerView.Adapter {
                         receiveViewHolder.binding.readMore.setVisibility(View.GONE);
                     }
                 } else {
-                    receiveViewHolder.binding.readMore.setVisibility(View.GONE);
+                    receiveViewHolder.binding.message.setVisibility(View.VISIBLE);
                     receiveViewHolder.binding.messageLong.setVisibility(View.GONE);
+                    receiveViewHolder.binding.readMore.setVisibility(View.GONE);
                     receiveViewHolder.binding.message.setText(message.getMessage());
                 }
                 receiveViewHolder.binding.msgTime.setText(Utils.format(new Date(message.getTimestamp())));

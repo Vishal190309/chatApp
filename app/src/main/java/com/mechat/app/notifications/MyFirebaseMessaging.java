@@ -14,6 +14,7 @@ import android.os.Bundle;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
+import androidx.core.app.NotificationCompat;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -31,11 +32,14 @@ import com.mechat.app.activity.ChatActivity;
 import com.mechat.app.model.Message;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+import java.util.Set;
 import java.util.regex.Pattern;
 
 public class MyFirebaseMessaging extends FirebaseMessagingService {
-    private ArrayList<String> msg = new ArrayList<>();
-    private String message = "";
 
     @Override
     public void onMessageReceived(@NonNull RemoteMessage remoteMessage) {
@@ -55,14 +59,13 @@ public class MyFirebaseMessaging extends FirebaseMessagingService {
         if (firebaseUser != null && sented.equals(firebaseUser.getUid())) {
 
             if (!currentUser.equals(user)) {
-                reference.orderByChild("isSeen")
-                        .limitToLast(1).addValueEventListener(new ValueEventListener() {
+                reference.orderByChild("isSeen").equalTo("sent")
+                      .addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                             dataSnapshot.getRef().child("isSeen").setValue("delivered");
                         }
-                        reference.removeEventListener(this);
                     }
 
                     @Override
@@ -79,81 +82,53 @@ public class MyFirebaseMessaging extends FirebaseMessagingService {
         }
     }
 
-    private void sendOreoNotification(RemoteMessage remoteMessage) {
+
+    private void sendOreoNotification(RemoteMessage remoteMessage){
         String user = remoteMessage.getData().get("user");
         String icon = remoteMessage.getData().get("icon");
         String title = remoteMessage.getData().get("title");
         String bodyString = remoteMessage.getData().get("body");
-        String sented = remoteMessage.getData().get("sented");
-        bodyString = bodyString.replaceAll("[^a-zA-Z0-9]", " ");
-        bodyString = bodyString.replaceAll("\\s+", " ");
-        String[] body = null;
-        Pattern pattern = Pattern.compile(" ");
-        body = pattern.split(bodyString);
+        bodyString = bodyString.replaceAll("\\[", "").replaceAll("\\]","").replaceAll("\"", "");
+
+        Pattern pattern = Pattern.compile(",");
+        String[] body = pattern.split(bodyString);
+        Log.d("TAG", "sendNotification: "+body);
 
 
         RemoteMessage.Notification notification = remoteMessage.getNotification();
         int j = Integer.parseInt(user.replaceAll("[\\D]", ""));
         Intent intent = new Intent(this, ChatActivity.class);
-        intent.putExtra("id", user);
+        intent.putExtra("id",user);
         Bundle bundle = new Bundle();
         bundle.putString("userid", user);
         intent.putExtras(bundle);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, j, intent, PendingIntent.FLAG_ONE_SHOT);
         Uri defaultSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-        Notification.InboxStyle inboxStyle =
-                new Notification.InboxStyle();
+        NotificationCompat.InboxStyle inboxStyle =
+                new NotificationCompat.InboxStyle();
         inboxStyle.setBigContentTitle(title);
-        String[] finalBody = body;
 
-        FirebaseDatabase.getInstance().getReference().child("chats").child(user + sented).child("messages")
-                .orderByChild("isSeen").limitToLast(5).equalTo("delivered")
-                .addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        msg = new ArrayList<>();
-                        if (snapshot.exists()) {
-                            int i = 0;
-                            for (DataSnapshot snapshot1 : snapshot.getChildren()) {
-                                if (snapshot1.exists()) {
-                                    msg.add(snapshot1.getValue(Message.class).getMessage());
+        for (int i=0; i < body.length; i++) {
+            inboxStyle.addLine(body[i]);
+        }
 
-                                }
-                            }
-                            for (int j = 0; j < msg.size(); j++) {
-                                inboxStyle.addLine(msg.get(j));
-                            }
-
-
-                            if (finalBody.length > 0) {
-                                message = msg.get(msg.size() - 1);
-                            }
-                        }
-
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
-
-                    }
-                });
-
-
+        String message = body[body.length-1];
         OreoNotification oreoNotification = new OreoNotification(this);
-        Notification.Builder builder = oreoNotification.getOreoNotification(title, message, pendingIntent,
-                defaultSound, icon, inboxStyle);
+        NotificationCompat.Builder builder = oreoNotification.getOreoNotification(title,message, pendingIntent,
+                defaultSound, icon,inboxStyle);
+
+
 
 
         int i = 0;
-        if (j > 0) {
+        if (j > 0){
             i = j;
         }
 
         oreoNotification.getManager().notify(i, builder.build());
 
     }
-
 
     @Override
     public void onNewToken(@NonNull String s) {
@@ -188,17 +163,16 @@ public class MyFirebaseMessaging extends FirebaseMessagingService {
         String icon = remoteMessage.getData().get("icon");
         String title = remoteMessage.getData().get("title");
         String bodyString = remoteMessage.getData().get("body");
+        bodyString = bodyString.replaceAll("\\[", "").replaceAll("\\]","").replaceAll("\"", "");
 
-        String sented = remoteMessage.getData().get("sented");
-        bodyString = bodyString.replaceAll("[^a-zA-Z0-9]", " ");
-        bodyString = bodyString.replaceAll("\\s+", " ");
-        String[] body = null;
-        Pattern pattern = Pattern.compile(" ");
-        body = pattern.split(bodyString);
+        Pattern pattern = Pattern.compile(",");
+        String[] body = pattern.split(bodyString);
+        Log.d("TAG", "sendNotification: "+body);
+
         RemoteMessage.Notification notification = remoteMessage.getNotification();
         int j = Integer.parseInt(user.replaceAll("[\\D]", ""));
         Intent intent = new Intent(this, ChatActivity.class);
-        intent.putExtra("id", user);
+        intent.putExtra("id",user);
         Bundle bundle = new Bundle();
         bundle.putString("userid", user);
         intent.putExtras(bundle);
@@ -206,71 +180,30 @@ public class MyFirebaseMessaging extends FirebaseMessagingService {
         PendingIntent pendingIntent = PendingIntent.getActivity(this, j, intent, PendingIntent.FLAG_ONE_SHOT);
 
         Uri defaultSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-        Notification.InboxStyle inboxStyle =
-                new Notification.InboxStyle();
+        NotificationCompat.InboxStyle inboxStyle =
+                new NotificationCompat.InboxStyle();
         inboxStyle.setBigContentTitle(title);
-        String[] finalBody = body;
-
-        FirebaseDatabase.getInstance().getReference().child("chats").child(user + sented).child("messages")
-                .orderByChild("isSeen").limitToLast(5).equalTo("delivered")
-                .addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        msg = new ArrayList<>();
-                        if (snapshot.exists()) {
-                            int i = 0;
-                            for (DataSnapshot snapshot1 : snapshot.getChildren()) {
-                                if (snapshot1.exists()) {
-                                    msg.add(snapshot1.getValue(Message.class).getMessage());
-
-                                }
-                            }
-                            for (int j = 0; j < msg.size(); j++) {
-                                inboxStyle.addLine(msg.get(j));
-                            }
 
 
-                            if (finalBody.length > 0) {
-                                message = msg.get(msg.size() - 1);
-                            }
-                        }
-
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
-
-                    }
-                });
-
-
-        Notification.Builder builder = null;
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
-            builder = new Notification.Builder(this)
-                    .setSmallIcon(Integer.parseInt(icon))
-                    .setContentTitle(title)
-                    .setContentText(message)
-                    .setStyle(inboxStyle)
-                    .setAutoCancel(true)
-                    .setColor(Color.BLUE)
-                    .setPriority(Notification.PRIORITY_MAX)
-                    .setSound(defaultSound)
-                    .setContentIntent(pendingIntent);
-        } else {
-            builder = new Notification.Builder(this)
-                    .setSmallIcon(Integer.parseInt(icon))
-                    .setContentTitle(title)
-                    .setContentText(message)
-                    .setStyle(inboxStyle)
-                    .setAutoCancel(true)
-                    .setPriority(Notification.PRIORITY_MAX)
-                    .setSound(defaultSound)
-                    .setContentIntent(pendingIntent);
+        for (int i=0; i < body.length; i++) {
+            inboxStyle.addLine(body[i]);
         }
-        NotificationManager noti = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+
+        String message = body[body.length-1];
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(this)
+                .setSmallIcon(Integer.parseInt(icon))
+                .setContentTitle(title)
+                .setContentText(message)
+                .setStyle(inboxStyle)
+                .setAutoCancel(true)
+                .setColor(Color.BLUE)
+                .setPriority(NotificationCompat.PRIORITY_MAX)
+                .setSound(defaultSound)
+                .setContentIntent(pendingIntent);
+        NotificationManager noti = (NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
 
         int i = 0;
-        if (j > 0) {
+        if (j > 0){
             i = j;
         }
 

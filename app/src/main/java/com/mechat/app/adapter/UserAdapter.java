@@ -22,6 +22,7 @@ import com.mechat.app.R;
 import com.mechat.app.databinding.UserListRowBinding;
 import com.mechat.app.model.Message;
 import com.mechat.app.model.User;
+import com.mechat.app.model.UserState;
 import com.mechat.app.utils.Utils;
 
 import java.util.ArrayList;
@@ -88,36 +89,39 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
 
                     }
                 });
-//        FirebaseDatabase.getInstance().getReference().child("presence").child(user.getUserId()).addValueEventListener(new ValueEventListener() {
-//                @Override
-//                public void onDataChange(@NonNull DataSnapshot snapshot) {
-//                    if (snapshot.exists()) {
-//                        UserState userState = snapshot.getValue(UserState.class);
-//
-//
-//                        long date = userState.getDate();
-//                        String time = userState.getTime();
-//                        String status = userState.getStatus();
-//                        assert status != null;
-//                        if (!status.isEmpty()) {
-//                            if (status.equals("Typing...")) {
-//                                holder.binding.lastMessage.setText(status);
-//                            } else {
-//                                binding.status.setText(status);
-//                                binding.status.setVisibility(View.VISIBLE);
-//
-//                            }
-//                        } else {
-//                            binding.status.setVisibility(View.GONE);
-//                        }
-//                    }
-//                }
-//
-//                @Override
-//                public void onCancelled(@NonNull DatabaseError error) {
-//
-//                }
-//            });
+        FirebaseDatabase.getInstance().getReference().child("presence").child(user.getUserId()).addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    if (snapshot.exists()) {
+                        UserState userState = snapshot.getValue(UserState.class);
+
+
+                        long date = userState.getDate();
+                        String time = userState.getTime();
+                        String status = userState.getStatus();
+                        assert status != null;
+                        if (!status.isEmpty()) {
+                            if (status.equals("Typing...")) {
+                                holder.binding.typing.setVisibility(View.VISIBLE);
+                                holder.binding.typing.setText(status);
+                                holder.binding.lastMessage.setVisibility(View.GONE);
+
+                            } else {
+                                holder.binding.typing.setVisibility(View.GONE);
+                                holder.binding.lastMessage.setVisibility(View.VISIBLE);
+
+                            }
+                        } else {
+                            holder.binding.typing.setVisibility(View.GONE);
+                        }
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+
+                }
+            });
 
         FirebaseDatabase.getInstance().getReference().child("chats").child(user.getUserId() + FirebaseAuth.getInstance().getUid()).child("messages").addValueEventListener(new ValueEventListener() {
             @Override

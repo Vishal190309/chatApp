@@ -23,7 +23,7 @@ public class OreoNotification extends ContextWrapper {
     public OreoNotification(Context base) {
         super(base);
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
             createChannel();
         }
     }
@@ -40,29 +40,30 @@ public class OreoNotification extends ContextWrapper {
         getManager().createNotificationChannel(channel);
     }
 
-    public NotificationManager getManager() {
-        if (notificationManager == null) {
-            notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+    public NotificationManager getManager(){
+        if (notificationManager == null){
+            notificationManager = (NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
         }
 
-        return notificationManager;
+        return  notificationManager;
     }
 
     @TargetApi(Build.VERSION_CODES.O)
-    public Notification.Builder getOreoNotification(String title, String message,
-                                                    PendingIntent pendingIntent, Uri soundUri, String icon, Notification.Style style) {
-        return new Notification.Builder(getApplicationContext(), CHANNEL_ID)
+    public  NotificationCompat.Builder getOreoNotification(String title,String message,
+                                                           PendingIntent pendingIntent, Uri soundUri, String icon,NotificationCompat.Style style){
+        return new NotificationCompat.Builder(getApplicationContext(), CHANNEL_ID)
                 .setContentIntent(pendingIntent)
                 .setContentTitle(title)
                 .setContentText(message)
                 .setStyle(style)
                 .setDefaults(NotificationCompat.DEFAULT_ALL)
-                .setPriority(Notification.PRIORITY_HIGH)
+                .setPriority(NotificationCompat.PRIORITY_HIGH)
                 .setColor(Color.BLUE)
                 .setSmallIcon(Integer.parseInt(icon))
                 .setSound(soundUri)
                 .setAutoCancel(true);
     }
+
 
 
 }

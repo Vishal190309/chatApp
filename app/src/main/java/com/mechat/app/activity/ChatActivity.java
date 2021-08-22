@@ -237,6 +237,7 @@ public class ChatActivity extends AppCompatActivity implements OnMessageClick {
 
     private void SendMessage(Intent intent, String senderUid, String senderRoom, String receiverRoom) {
         Handler handler = new Handler();
+
         binding.send.setOnClickListener(view -> {
 
             SharedPreferences preferences = getSharedPreferences("PREFS", MODE_PRIVATE);
@@ -262,6 +263,8 @@ public class ChatActivity extends AppCompatActivity implements OnMessageClick {
 
             notify = true;
             if (binding.message.length() > 0) {
+                String sentMessage = binding.message.getText().toString().trim();
+                Log.d("Log", "onDataChange: " + sentMessage);
                 if (intent.getStringExtra("allUser") != null) {
                     if (intent.getStringExtra("allUser").equals("allUserActivity")) {
 
@@ -365,22 +368,25 @@ public class ChatActivity extends AppCompatActivity implements OnMessageClick {
                     });
                 }
                 FirebaseDatabase.getInstance().getReference().child("chats").child(senderRoom).child("messages")
-                        .orderByChild("isSeen").limitToLast(5).equalTo("sent")
+                        .orderByChild("isSeen").limitToLast(5).equalTo("delivered")
                         .addValueEventListener(new ValueEventListener() {
                             @Override
                             public void onDataChange(@NonNull DataSnapshot snapshot) {
                                 msg = new ArrayList<>();
                                 if (snapshot.exists()) {
-                                    int i = 0;
                                     for (DataSnapshot snapshot1 : snapshot.getChildren()) {
                                         if (snapshot1.exists()) {
                                             msg.add(snapshot1.getValue(Message.class).getMessage());
 
                                         }
+
                                     }
 
-                                    Log.d("Log", "onDataChange: " + msg);
+
                                 }
+                                msg.add(sentMessage);
+                                Log.d("Log", "onDataChange: " + msg);
+
                             }
 
                             @Override
@@ -396,6 +402,7 @@ public class ChatActivity extends AppCompatActivity implements OnMessageClick {
                         User user = dataSnapshot.getValue(User.class);
                         if (notify) {
                             assert user != null;
+
                             sendNotifiaction(receiverUid, user.getUserName(), msg);
                         }
                         notify = false;
@@ -425,6 +432,7 @@ public class ChatActivity extends AppCompatActivity implements OnMessageClick {
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     Token token = snapshot.getValue(Token.class);
                     Log.d("TAG", "onDataChange: " + "notification");
+
                     Data data = new Data(senderUid, R.drawable.ic_stat_name, message, username,
                             receiverUid);
 

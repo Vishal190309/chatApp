@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">WalletChat</string>
+    <string name="app_name">MeChat</string>
     <string name="image_description">Icon</string>
     <string name="no_internet_text">No internet connection,Please connect to internet and try again</string>
     <string name="retry_text">Retry</string>

@@ -9,7 +9,8 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="4dp">
 
         <TextView
             android:id="@+id/day_text"
@@ -39,7 +40,7 @@
             android:maxWidth="300dp"
             android:paddingLeft="15dp"
             android:paddingTop="5dp"
-            android:paddingRight="4dp"
+            android:paddingRight="2dp"
             android:paddingBottom="7dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -51,13 +52,16 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:ellipsize="end"
-                android:maxWidth="300dp"
+                android:maxWidth="280dp"
                 android:maxLines="15"
+                android:paddingEnd="2dp"
                 android:textColor="@color/black"
-                android:textSize="17sp"
+                android:textSize="16sp"
                 android:visibility="gone"
+                app:layout_constrainedWidth="true"
                 app:layout_constraintBottom_toTopOf="@+id/msg_time"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
@@ -84,7 +88,8 @@
                 android:maxWidth="300dp"
                 android:maxHeight="500dp"
                 android:textColor="@color/black"
-                android:textSize="17sp"
+                android:textSize="16sp"
+                android:visibility="gone"
                 app:layout_constraintBottom_toBottomOf="@+id/msg_time"
                 app:layout_constraintEnd_toStartOf="@+id/msg_time"
                 app:layout_constraintTop_toTopOf="@+id/msg_time" />
@@ -95,6 +100,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="4dp"
                 android:textColor="#888"
+                android:textSize="12sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent" />
 
